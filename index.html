@@ -1,0 +1,1883 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>دستیار تخصصی آزمون رزیدنتی دندانپزشکی دوره ۴۰ (۱۴۰۵)</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Vazirmatn Font CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Vazirmatn', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#ecfeff',
+              100: '#cffafe',
+              500: '#06b6d4',
+              600: '#0891b2',
+              700: '#0e7490',
+              800: '#155e75',
+              900: '#164e63',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Vazirmatn', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    .dark ::-webkit-scrollbar-track {
+      background: #1e293b;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #94a3b8;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+    .custom-check {
+      appearance: none;
+      -webkit-appearance: none;
+      height: 1.25rem;
+      width: 1.25rem;
+      border: 2px solid #cbd5e1;
+      border-radius: 0.375rem;
+      outline: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .dark .custom-check {
+      border-color: #475569;
+      background-color: #1e293b;
+    }
+    .custom-check:checked {
+      background-color: #0d9488;
+      border-color: #0d9488;
+    }
+    .custom-check:checked::after {
+      content: '\f00c';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      color: white;
+      font-size: 0.75rem;
+    }
+    .custom-check.summary-check:checked {
+      background-color: #9333ea;
+      border-color: #9333ea;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+  <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-600 to-cyan-500 flex items-center justify-center text-white shadow-md">
+            <i class="fa-solid fa-tooth text-xl"></i>
+          </div>
+          <div>
+            <h1 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-tight">
+              چک‌لیست دستیاری دندانپزشکی
+            </h1>
+            <p class="text-xs text-teal-600 dark:text-teal-400 font-medium">
+              دوره ۴۰ - رفرنس‌های مصوب سال ۱۴۰۵[cite: 1]
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+          <div class="hidden md:flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700">
+            <i class="fa-solid fa-chart-pie text-teal-600 dark:text-teal-400 text-sm"></i>
+            <span class="text-xs text-slate-600 dark:text-slate-300">پیشرفت کل رفرنس‌ها:</span>
+            <span id="headerProgressText" class="text-xs font-bold text-teal-600 dark:text-teal-400">0%</span>
+          </div>
+
+          <button onclick="exportData()" title="پشتیبان‌گیری JSON" class="p-2 text-slate-600 dark:text-slate-300 hover:text-teal-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-sm transition">
+            <i class="fa-solid fa-cloud-arrow-down"></i>
+          </button>
+          <label title="بازیابی فایل داده‌ها" class="p-2 cursor-pointer text-slate-600 dark:text-slate-300 hover:text-teal-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-sm transition">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <input type="file" id="importFileInput" onchange="importData(event)" class="hidden" accept=".json">
+          </label>
+
+          <button onclick="toggleTheme()" class="p-2 text-slate-600 dark:text-slate-300 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-base transition">
+            <i class="fa-solid fa-moon dark:hidden"></i>
+            <i class="fa-solid fa-sun hidden dark:inline"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="flex space-x-reverse space-x-1 sm:space-x-4 border-t border-slate-200 dark:border-slate-800 overflow-x-auto py-2 text-xs sm:text-sm font-medium scrollbar-none">
+        <button onclick="switchTab('official')" id="tabBtn-official" class="tab-btn active px-3.5 py-2 rounded-lg flex items-center gap-2 whitespace-nowrap bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-300 font-semibold border border-teal-200 dark:border-teal-800/60 transition">
+          <i class="fa-solid fa-book-bookmark text-sm"></i>
+          <span>منابع رسمی و فصول تفکیک‌شده</span>
+        </button>
+        <button onclick="switchTab('supplementary')" id="tabBtn-supplementary" class="tab-btn px-3.5 py-2 rounded-lg flex items-center gap-2 whitespace-nowrap text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+          <i class="fa-solid fa-layer-group text-sm"></i>
+          <span>منابع کمک‌آموزشی (تفکیک به درس)</span>
+        </button>
+        <button onclick="switchTab('summaries')" id="tabBtn-summaries" class="tab-btn px-3.5 py-2 rounded-lg flex items-center gap-2 whitespace-nowrap text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+          <i class="fa-solid fa-pen-nib text-sm"></i>
+          <span>چک‌لیست خلاصه‌ها و یادداشت‌ها</span>
+        </button>
+        <button onclick="switchTab('study-tracker')" id="tabBtn-study-tracker" class="tab-btn px-3.5 py-2 rounded-lg flex items-center gap-2 whitespace-nowrap text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+          <i class="fa-solid fa-stopwatch text-sm"></i>
+          <span>تایمر مطالعه و گزارش کار</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- Progress Dashboard -->
+    <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm relative overflow-hidden">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
+        <div>
+          <h2 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-teal-500 animate-pulse"></span>
+            داشبورد کلی مطالعه و دورهای مرور
+          </h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            پیشرفت مطالعاتی دورهای ۱ تا ۳ و دوره‌های آزاد مرور اضافه شده
+          </p>
+        </div>
+        <div class="flex items-center gap-4 text-xs font-semibold">
+          <div class="bg-teal-50 dark:bg-teal-950/40 text-teal-700 dark:text-teal-300 px-3 py-1.5 rounded-xl border border-teal-200 dark:border-teal-900/60">
+            تیک‌های ثبت‌شده: <span id="checkedCountDisplay">0</span> / <span id="totalCheckCountDisplay">0</span>
+          </div>
+          <div class="text-teal-600 dark:text-teal-400 text-lg font-black" id="percentageDisplay">0%</div>
+        </div>
+      </div>
+      <div class="w-full bg-slate-100 dark:bg-slate-800 h-3 rounded-full overflow-hidden p-0.5">
+        <div id="globalProgressBar" class="h-full bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <!-- SECTION 1: OFFICIAL DETAILED SYLLABUS -->
+    <div id="tabContent-official" class="tab-pane space-y-4">
+      <div class="flex flex-col sm:flex-row gap-3 items-center justify-between">
+        <div class="relative w-full sm:w-80">
+          <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-3.5 text-slate-400 text-sm"></i>
+          <input type="text" id="officialSearchInput" oninput="filterOfficialList()" placeholder="جستجو در درس، رفرنس یا مبحث..." class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl pr-10 pl-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 shadow-sm transition">
+        </div>
+        <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+          <button onclick="expandAllOfficial(true)" class="text-xs bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-3 py-2 rounded-lg transition">
+            <i class="fa-solid fa-angles-down ml-1"></i> باز کردن همه
+          </button>
+          <button onclick="expandAllOfficial(false)" class="text-xs bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-3 py-2 rounded-lg transition">
+            <i class="fa-solid fa-angles-up ml-1"></i> بستن همه
+          </button>
+        </div>
+      </div>
+
+      <div id="officialCoursesContainer" class="space-y-4"></div>
+    </div>
+
+    <!-- SECTION 2: SUPPLEMENTARY BY SUBJECT -->
+    <div id="tabContent-supplementary" class="tab-pane hidden space-y-5">
+      <div class="bg-gradient-to-r from-cyan-900/10 to-teal-900/10 dark:from-cyan-950/40 dark:to-teal-950/40 p-4 rounded-2xl border border-cyan-200/60 dark:border-cyan-800/40 flex items-start gap-3">
+        <i class="fa-solid fa-graduation-cap text-cyan-600 dark:text-cyan-400 text-xl mt-0.5"></i>
+        <div>
+          <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100">منابع کمک‌آموزشی به تفکیک دروس</h3>
+          <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">
+            روی هر یک از دروس زیر کلیک کنید تا تمام دسته‌های کمک‌آموزشی (پارسه، تست، ویدیو، بانک آزمون، CDR، اسپرسو، آوید، اکسیر، DDQ و...) باز شوند[cite: 2]. سپس می‌توانید مباحث مطالعه‌شده را افزوده و دورهای مطالعه و مرورهای نامحدود خود را تیک بزنید.
+          </p>
+        </div>
+      </div>
+
+      <div id="supplementaryBySubjectContainer" class="space-y-4"></div>
+    </div>
+
+    <!-- SECTION 3: SUMMARIES CHECKLIST (با ساختار بازشونده به ازای هر درس) -->
+    <div id="tabContent-summaries" class="tab-pane hidden space-y-4">
+      <div class="bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-900/50 p-4 rounded-2xl flex items-start gap-3">
+        <i class="fa-solid fa-pen-fancy text-purple-600 dark:text-purple-400 text-xl mt-0.5"></i>
+        <div>
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">چک‌لیست خلاصه‌ها و یادداشت‌های طلایی</h3>
+          <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">
+            روی هر درس کلیک کنید تا سرفصل‌ها و فصول آن باز شوند. سپس می‌توانید وضعیت نگارش خلاصه و نکات کلیدی را برای هر مبحث ثبت کنید.
+          </p>
+        </div>
+      </div>
+
+      <div id="summariesContainer" class="space-y-4"></div>
+    </div>
+
+    <!-- SECTION 4: STUDY TRACKER & STOPWATCH -->
+    <div id="tabContent-study-tracker" class="tab-pane hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Timer -->
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between items-center text-center">
+          <div class="w-full flex items-center justify-between mb-4">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-400">کرنومتر مطالعه</span>
+            <span id="timerStatusBadge" class="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2.5 py-1 rounded-full font-bold">آماده</span>
+          </div>
+
+          <div class="my-3">
+            <div id="timerDisplay" class="text-5xl font-mono font-black text-slate-800 dark:text-white tracking-widest">
+              00:00:00
+            </div>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">ساعت : دقیقه : ثانیه</p>
+          </div>
+
+          <div class="flex items-center gap-2 mt-4 w-full">
+            <button id="startTimerBtn" onclick="startTimer()" class="flex-1 bg-teal-600 hover:bg-teal-700 active:scale-95 text-white font-medium py-2.5 px-3 rounded-xl shadow-md transition flex items-center justify-center gap-1.5 text-xs sm:text-sm">
+              <i class="fa-solid fa-play"></i> شروع
+            </button>
+            <button id="pauseTimerBtn" onclick="pauseTimer()" class="hidden flex-1 bg-amber-500 hover:bg-amber-600 active:scale-95 text-white font-medium py-2.5 px-3 rounded-xl shadow-md transition items-center justify-center gap-1.5 text-xs sm:text-sm">
+              <i class="fa-solid fa-pause"></i> مکث
+            </button>
+            <button id="stopTimerBtn" onclick="stopAndTransferTimer()" class="flex-1 bg-rose-500 hover:bg-rose-600 active:scale-95 text-white font-medium py-2.5 px-3 rounded-xl shadow-md transition flex items-center justify-center gap-1.5 text-xs sm:text-sm">
+              <i class="fa-solid fa-check"></i> انتقال به فرم
+            </button>
+            <button onclick="resetTimer()" title="صفر کردن" class="p-2.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 bg-slate-100 dark:bg-slate-800 rounded-xl transition">
+              <i class="fa-solid fa-rotate-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Log Form -->
+        <div class="lg:col-span-2 bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <h3 class="text-base font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-clipboard-list text-teal-600 dark:text-teal-400"></i>
+            ثبت گزارش مطالعه و تست‌زنی
+          </h3>
+
+          <form id="studyLogForm" onsubmit="handleStudyLogSubmit(event)" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">تاریخ یا روز</label>
+                <input type="text" id="logDateInput" placeholder="مثلاً: ۱۴۰۴/۱۲/۱۵ یا شنبه" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">درس مربوطه</label>
+                <select id="logCourseSelect" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+                  <option value="اندودانتیکس">اندودانتیکس</option>
+                  <option value="بیماری‌های دهان و فک و صورت">بیماری‌های دهان و فک و صورت</option>
+                  <option value="پریودانتیکس">پریودانتیکس</option>
+                  <option value="دندانپزشکی کودکان">دندانپزشکی کودکان</option>
+                  <option value="رادیولوژی دهان و فک و صورت">رادیولوژی دهان و فک و صورت</option>
+                  <option value="پروتزهای دندانی">پروتزهای دندانی</option>
+                  <option value="جراحی دهان و فک و صورت">جراحی دهان و فک و صورت</option>
+                  <option value="دندانپزشکی ترمیمی">دندانپزشکی ترمیمی</option>
+                  <option value="آسیب‌شناسی دهان و فک و صورت">آسیب‌شناسی دهان و فک و صورت</option>
+                  <option value="ارتودانتیکس">ارتودانتیکس</option>
+                  <option value="سلامت دهان و دندانپزشکی اجتماعی">سلامت دهان و دندانپزشکی اجتماعی</option>
+                  <option value="مواد دندانی">مواد دندانی</option>
+                  <option value="زبان تخصصی دندانپزشکی">زبان تخصصی دندانپزشکی</option>
+                  <option value="مرور تست / جامع">مرور تست / جامع</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">مدت مطالعه (دقیقه)</label>
+                <input type="number" id="logMinutesInput" placeholder="مثلاً: ۹۰" min="1" required class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">تعداد تست زده‌شده</label>
+                <input type="number" id="logTestsInput" placeholder="مثلاً: ۶۰" min="0" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">توضیحات و درصد پاسخگویی</label>
+                <input type="text" id="logNotesInput" placeholder="مثلاً: تست‌های ۱۰ سال اخیر کودکان، درصد ۷۲٪" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+              </div>
+            </div>
+
+            <div class="flex justify-end pt-2">
+              <button type="submit" class="bg-teal-600 hover:bg-teal-700 active:scale-95 text-white font-medium py-2.5 px-6 rounded-xl shadow transition text-sm flex items-center gap-2">
+                <i class="fa-solid fa-plus"></i> ثبت گزارش کار
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Logs Table -->
+      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-slate-50/50 dark:bg-slate-800/40">
+          <div>
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">جدول زمان‌بندی و گزارشات ثبت‌شده</h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">محاسبه هوشمند کل ساعات مطالعه و تست‌ها</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="text-xs bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-300 px-3 py-1.5 rounded-lg font-bold">
+              مجموع مطالعه: <span id="totalStudyHoursBadge">۰ ساعت</span>
+            </div>
+            <div class="text-xs bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-300 px-3 py-1.5 rounded-lg font-bold">
+              کل تست‌ها: <span id="totalStudyTestsBadge">۰</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-right text-xs sm:text-sm">
+            <thead class="bg-slate-100/70 dark:bg-slate-800/70 text-slate-600 dark:text-slate-300 uppercase font-semibold text-[11px]">
+              <tr>
+                <th class="p-3">تاریخ</th>
+                <th class="p-3">درس / سرفصل</th>
+                <th class="p-3">مدت زمان</th>
+                <th class="p-3">تعداد تست</th>
+                <th class="p-3">توضیحات</th>
+                <th class="p-3 text-center">حذف</th>
+              </tr>
+            </thead>
+            <tbody id="studyLogTableBody" class="divide-y divide-slate-200 dark:divide-slate-800 font-normal"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const DEFAULT_SYLLABUS = [
+      {
+        id: "endo",
+        title: "اندودانتیکس",
+        books: [
+          {
+            id: "endo_torabinejad",
+            name: "Torabinejad M, Fouad AF, Shabahang S. Endodontics: Principles and Practice",
+            edition: "6th Ed. 2021",
+            condition: "تمام فصول کتاب",
+            chapters: [
+              { num: 1, title: "بیماری‌زایی ضایعات پالپ و پری‌آپیکال (Pathogenesis)" },
+              { num: 2, title: "ملاحظات سیستمیک در اندودانتیکس" },
+              { num: 3, title: "تشخیص و طرح درمان در اندودانتیکس (Endodontic Diagnosis)" },
+              { num: 4, title: "افتراق دردهای دهان و صورت و دندان" },
+              { num: 5, title: "رادیوگرافی و CBCT در اندودانتیکس" },
+              { num: 6, title: "وسایل و تجهیزات اندودانتیک (Instruments)" },
+              { num: 7, title: "آناتومی داخلی دندان و حفره دسترسی (Access Cavity)" },
+              { num: 8, title: "بی‌حسی موضعی و کنترل درد در اندو" },
+              { num: 9, title: "درمان فوریت‌های اندودانتیکس (Emergencies)" },
+              { num: 10, title: "بیولوژی و درمان‌های محافظه‌کارانه پالپ زنده (Vital Pulp)" },
+              { num: 11, title: "آماده‌سازی و شکل‌دهی کانال ریشه (Cleaning & Shaping)" },
+              { num: 12, title: "شستشو و دارودرمانی کانال (Irrigants & Intracanal Meds)" },
+              { num: 13, title: "پرکردن کانال و مواد انسدادی (Obturation)" },
+              { num: 14, title: "بازسازی دندان‌های درمان ریشه شده" },
+              { num: 15, title: "پیش‌آگهی و ارزیابی موفقیت درمان ریشه" },
+              { num: 16, title: "درمان مجدد غیرجراحی اندودانتیکس (Retreatment)" },
+              { num: 17, title: "جراحی پری‌رادیکولار و اندودانتیک" },
+              { num: 18, title: "صدمات تروماتیک به دندان‌ها (Trauma)" },
+              { num: 19, title: "بازجذب‌های دندانی ریشه (Resorption)" },
+              { num: 20, title: "حوادث حین کار در اندو (Procedural Accidents)" },
+              { num: 21, title: "ضایعات مشترک اندو-پریو (Endo-Perio)" },
+              { num: 22, title: "بلیچینگ و سفیدکردن دندان‌های بدون پالپ" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "om",
+        title: "بیماری‌های دهان و فک و صورت",
+        books: [
+          {
+            id: "om_burket",
+            name: "Glick M. Burket's Oral Medicine",
+            edition: "13th Ed. 2021",
+            condition: "فصول ۳، ۴، ۵، ۶ و ۹ کتاب",
+            chapters: [
+              { num: 3, title: "زخم‌های آفتی راجعه و بیماری‌های اولسراتیو (Aphthous Stomatitis)" },
+              { num: 4, title: "بیماری‌های وزیکولوبولوس و تاولی مخاط دهان" },
+              { num: 5, title: "نئوپلاسم‌های خوش‌خیم و بدخیم مخاط دهان" },
+              { num: 6, title: "بیماری‌ها و اختلالات غدد بزاقی (Salivary Glands)" },
+              { num: 9, title: "تظاهرات دهانی HIV و بیماری‌های نقص ایمنی" }
+            ]
+          },
+          {
+            id: "om_falace",
+            name: "Falace DA, Little J. Dental Management in Medically Compromised Patient",
+            edition: "10th Ed. 2024",
+            condition: "فصول ۲، ۳، ۴، ۱۲، ۱۴، ۱۶، ۱۷ و ۲۴ فقط مباحث ملاحظات دندانپزشکی",
+            chapters: [
+              { num: 2, title: "ملاحظات دندانپزشکی در بیماری‌های ایسکمیک قلب و آنژین" },
+              { num: 3, title: "ملاحظات دندانپزشکی در نارسایی قلبی و کاردیومیوپاتی‌ها" },
+              { num: 4, title: "ملاحظات دندانپزشکی در آریتمی‌ها و پیس‌میکر" },
+              { num: 12, title: "ملاحظات دندانپزشکی در اختلالات خونریزی‌دهنده و ضدپلاکت‌ها" },
+              { num: 14, title: "ملاحظات دندانپزشکی در آسم و بیماری‌های انسدادی ریه (COPD)" },
+              { num: 16, title: "ملاحظات دندانپزشکی در هپاتیت‌های ویروسی و سیروز کبدی" },
+              { num: 17, title: "ملاحظات دندانپزشکی در نارسایی مزمن کلیه و همودیالیز" },
+              { num: 24, title: "ملاحظات دندانپزشکی در دیابت، تیروئید و غدد فوق‌کلیوی" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "perio",
+        title: "پریودانتیکس",
+        books: [
+          {
+            id: "perio_carranza",
+            name: "Carranza's Clinical Periodontology",
+            edition: "14th Ed. 2023",
+            condition: "فصول ۴، ۵، ۸، ۱۰، ۱۳ تا ۳۰، ۳۲، ۳۵، ۳۸ تا ۵۳، ۵۶، ۵۹ تا ۶۶، ۷۰، ۷۲ تا ۷۴ و ۷۸ و ۸۷",
+            chapters: [
+              { num: 4, title: "آناتومی میکروسکوپی و بافت‌شناسی پریودنشیوم" },
+              { num: 5, title: "آناتومی ماکروسکوپی و بیولوژی اتصالات لثه‌ای" },
+              { num: 8, title: "بیوفیلم دندانی و میکروبیولوژی بیماری‌های پریودنتال" },
+              { num: 10, title: "ایمونولوژی و پاسخ میزبان در پریودنتیت" },
+              { num: 13, title: "نقش جرم، فاکتورهای یاتروژنیک و عادات دهانی" },
+              { num: 14, title: "فاکتورهای ژنتیکی و سیستمیک در بیماری لثه" },
+              { num: 15, title: "سیگار و تأثیر آن بر وضعیت بافت‌های نگهدارنده" },
+              { num: 16, title: "استرس، تغذیه و سلامت پریودنتال" },
+              { num: 17, title: "تأثیرات پریودنتیت بر سلامت سیستمیک (قلب، دیابت و زایمان)" },
+              { num: 18, title: "پاتوژنز و پیشرفت پاکت پریودنتال" },
+              { num: 19, title: "پاتولوژی ژنژیویت و تغییرات اولیه لثه" },
+              { num: 20, title: "بیماری‌های ژنژوال غیرمرتبط با پلاک دندانی" },
+              { num: 21, title: "ژنژیویت اولسراتیو نکروزان (NUG)" },
+              { num: 22, title: "افزایش حجم‌های لثه (Gingival Enlargement)" },
+              { num: 23, title: "عفونت‌های حاد لثه و آبسه‌های پریودنتال" },
+              { num: 24, title: "درگیری‌های لثه در کودکان و دوران نوجوانی" },
+              { num: 25, title: "تخریب استخوان آلوئول و الگوهای تحلیل عمودی و افقی" },
+              { num: 26, title: "پاکت پریودنتال و دیواره‌های استخوانی" },
+              { num: 27, title: "طبقه‌بندی نوین بیماری‌های پریودنتال و استیج‌بندی (Stage)" },
+              { num: 28, title: "درجه‌بندی پریودنتیت بر اساس نرخ پیشرفت (Grade)" },
+              { num: 29, title: "پریودنتیت نکروزان و پریودنتیت پیشرفته" },
+              { num: 30, title: "ترومای ناشی از اکلوژن و تحرک دندان‌ها" },
+              { num: 32, title: "معاینه بالینی پریودنتال و نحوه ثبت پروبینگ" },
+              { num: 35, title: "تعیین پروگنوز، پیش‌آگهی و طرح درمان پریودنتال" },
+              { num: 38, title: "طرح درمان جامع فاز اول (Cause-Related Therapy)" },
+              { num: 39, title: "کنترل بیوفیلم دندانی توسط بیمار (بهداشت فردی)" },
+              { num: 40, title: "اصول جرم‌گیری و تسطیح ریشه (SRP)" },
+              { num: 41, title: "وسایل پریودنتال دستی و اولتراسونیک" },
+              { num: 42, title: "شارپ‌کردن وسایل جرم‌گیری پریودنتال" },
+              { num: 43, title: "درمان‌های اکلوزالی در پریودانتیکس" },
+              { num: 44, title: "ارتودنسی در بیماران با پریودنشیوم آسیب‌دیده" },
+              { num: 45, title: "ارزیابی مجدد پس از فاز اول درمان (Re-evaluation)" },
+              { num: 46, title: "آنتی‌بیوتیک‌تراپی سیستمیک در پریودنتیت" },
+              { num: 47, title: "سیستم‌های رهایش موضعی دارو (Local Drug Delivery)" },
+              { num: 48, title: "تعدیل‌کننده‌های پاسخ میزبان (Host Modulation)" },
+              { num: 49, title: "کاربرد لیزر در درمان‌های پریودنتال" },
+              { num: 50, title: "حساسیت عاج دندان پس از درمان‌های جرم‌گیری" },
+              { num: 51, title: "درمان آبسه‌های پریودنتال و فوریت‌ها" },
+              { num: 52, title: "آماده‌سازی بافت‌ها قبل از پروتز" },
+              { num: 53, title: "ملاحظات جراحی‌های پیش‌پروتزی پریودنتال" },
+              { num: 56, title: "اصول و تکنیک‌های جراحی پریودنتال و فلپ‌ها" },
+              { num: 59, title: "تکنیک ژنژیوکتومی و ژنژیوپلاستی" },
+              { num: 60, title: "فلپ پریودنتال موضعی و طراحی برش‌ها" },
+              { num: 61, title: "جراحی فلپ بازسازی‌شده و رزکتیو استخوانی" },
+              { num: 62, title: "جراحی رژنراتیو پریودنتال و پیوندهای استخوانی (Grafts)" },
+              { num: 63, title: "هدایت بازسازی بافت (GTR) و ممبرین‌ها" },
+              { num: 64, title: "فاکتورهای بیولوژیک و ترشحات پلاکت (PRP & PRF)" },
+              { num: 65, title: "مراقبت‌های بعد از عمل جراحی پریودنتال" },
+              { num: 66, title: "عوارض و مشکلات حین و پس از جراحی لثه" },
+              { num: 70, title: "جراحی پلاستیک و زیبایی پریودنتال (موکوژنژیووال)" },
+              { num: 72, title: "اتیولوژی و طبقه‌بندی ضایعات فورکا (Furcation)" },
+              { num: 73, title: "درمان‌های رزکتیو و بازسازی ضایعات فورکا" },
+              { num: 74, title: "ضایعات اندودنتیک-پریودنتال مشترک و رویکرد تشخیصی" },
+              { num: 78, title: "فاز نگهدارنده و مراقبت‌های دوره‌ای (Supportive Care)" },
+              { num: 87, title: "موکوزیت ایمپلنت و پری‌ایمپلنتیت (تشخیص و درمان)" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "pedio",
+        title: "دندانپزشکی کودکان",
+        books: [
+          {
+            id: "pedio_mcdonald",
+            name: "McDonald and Avery's Dentistry for the Child and Adolescent",
+            edition: "11th Ed. 2021",
+            condition: "فصول ۱، ۲، ۳، ۴، ۸، ۹، ۱۰، ۱۱، ۱۲، ۱۴، ۱۵، ۱۶، ۱۷، ۲۰، ۲۱، ۲۳، ۲۶، ۲۷، ۲۸ و ۲۹",
+            chapters: [
+              { num: 1, title: "معاینه دهان، دندان و طرح درمان در کودکان" },
+              { num: 2, title: "تکنیک‌های رادیوگرافی در کودکان و نوجوانان" },
+              { num: 3, title: "ژنتیک و ناهنجاری‌های دندانی در دندانپزشکی کودکان" },
+              { num: 4, title: "مراحل تکامل، رویش دندان‌ها و اختلالات ساختاری" },
+              { num: 8, title: "مدیریت رفتاری غیردارویی کودک در مطب (Behavior Management)" },
+              { num: 9, title: "داروهای آرام‌بخش و بی‌حسی موضعی در اطفال" },
+              { num: 10, title: "دندانپزشکی بیمارستانی و درمان تحت بیهوشی عمومی" },
+              { num: 11, title: "پوسیدگی‌شناسی در اطفال، رژیم غذایی و فلورایدتراپی" },
+              { num: 12, title: "ترمیم دندان‌های شیری و روکش‌های فلزی ضدزنگ (SSC)" },
+              { num: 14, title: "درمان پالپ دندان‌های شیری (پالپوتومی و پالپکتومی)" },
+              { num: 15, title: "درمان پالپ دندان‌های دائمی جوان (آپکسوژنز و آپکسیفیکاسیون)" },
+              { num: 16, title: "ترومای دندانی و صدمات بافتی در کودکان" },
+              { num: 17, title: "آسیب‌شناسی دهان و ضایعات شایع بافت نرم در اطفال" },
+              { num: 20, title: "مدیریت فضا در قوس دندانی و انواع فضانگهدارنده‌ها" },
+              { num: 21, title: "ارتودنسی پیشگیرانه و مداخله‌ای در سنین رشد" },
+              { num: 23, title: "عادات دهانی پارافانکشنال (مکیدن انگشت، زبان‌زدن و درمان)" },
+              { num: 26, title: "مراقبت‌های دندانپزشکی در کودکان با نیازهای خاص (SHCN)" },
+              { num: 27, title: "مدیریت شکاف لب و کام و نقایص کرانیوفاسیال" },
+              { num: 28, title: "بیماری‌های پریودنتال در کودکان و نوجوانان" },
+              { num: 29, title: "تکنیک‌های کشیدن دندان شیری و جراحی سرپایی در کودکان" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "radio",
+        title: "رادیولوژی دهان و فک و صورت",
+        books: [
+          {
+            id: "radio_white",
+            name: "White SC, Pharoah MJ. Oral Radiology, Principles and Interpretation",
+            edition: "8th Ed. 2019",
+            condition: "فصول ۱ تا پایان ۹، فصل ۱۲، فصول ۱۵ تا پایان ۲۸",
+            chapters: [
+              { num: 1, title: "فیزیک اشعه ایکس و اصول تولید پرتوها" },
+              { num: 2, title: "برهم‌کنش پرتوهای ایکس با ماده" },
+              { num: 3, title: "تیوب رادیوگرافی و ویژگی‌های هندسی تصویر" },
+              { num: 4, title: "رادیوبیولوژی و اثرات بیولوژیک پرتوها" },
+              { num: 5, title: "حفاظت در برابر اشعه و دوزیمتری در دندانپزشکی" },
+              { num: 6, title: "دتکتورها و سیستم‌های تصویربرداری دیجیتال" },
+              { num: 7, title: "تکنیک‌های رادیوگرافی پری‌آپیکال و بایت‌وینگ" },
+              { num: 8, title: "تکنیک رادیوگرافی اکلوزال" },
+              { num: 9, title: "خطاهای رادیوگرافی و پردازش تصویر" },
+              { num: 12, title: "رادیوگرافی پانورامیک و خطاهای پوزیشنینگ بیمار" },
+              { num: 15, title: "آناتومی نرمال دندان‌ها و استخوان‌ها در رادیوگرافی داخل دهانی" },
+              { num: 16, title: "آناتومی رادیوگرافیک نرمال در کلیشه‌های پانورامیک" },
+              { num: 17, title: "اصول تصویربرداری مقطعی و CBCT" },
+              { num: 18, title: "آناتومی مقطعی سر و فک در CBCT" },
+              { num: 19, title: "تشخیص رادیوگرافیک پوسیدگی‌های دندانی" },
+              { num: 20, title: "ارزیابی رادیوگرافیک بیماری‌های پریودنتال" },
+              { num: 21, title: "ناهنجاری‌های رشدی دندان‌ها (تعداد، فرم و اندازه)" },
+              { num: 22, title: "ضایعات التهابی استخوان‌های فک" },
+              { num: 23, title: "عفونت‌های استخوانی و استئومایلیت در رادیوگرافی" },
+              { num: 24, title: "ضایعات رادیولوسنت فکین با منشأ ادنتوژنیک" },
+              { num: 25, title: "کیست‌های فکین (ادنتوژنیک و غیرادنتوژنیک)" },
+              { num: 26, title: "تومورهای خوش‌خیم ادنتوژنیک و غیراودنتوژنیک استخوان فک" },
+              { num: 27, title: "بدخیمی‌های فک و صورت در تصویربرداری" },
+              { num: 28, title: "ضایعات با ظاهر رادیواپک و استخوانی فکین" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "prostho",
+        title: "پروتزهای دندانی",
+        books: [
+          {
+            id: "prostho_schillingberg",
+            name: "Schillingberg HT. Fundamentals of Fixed Prosthodontics",
+            edition: "4th Ed. 2012",
+            condition: "کلیه فصول به جز فصول ۵، ۹، ۱۰، ۱۱ و ۱۲",
+            chapters: [
+              { num: 1, title: "مقدمه‌ای بر پروتز ثابت و اصول اولیه" },
+              { num: 2, title: "اصول اکلوژن در پروتز ثابت" },
+              { num: 3, title: "طرح درمان برای پروتزهای ثابت تک‌واحدی و بریج‌ها" },
+              { num: 4, title: "اصول بیومکانیک و ژئومتری تراش دندان‌ها" },
+              { num: 6, title: "تراش روکش‌های ریختگی کامل (Full Cast Crown)" },
+              { num: 7, title: "تراش روکش‌های متال‌سرامیک (PFM)" },
+              { num: 8, title: "تراش روکش‌های تمام‌سرامیک (All-Ceramic)" },
+              { num: 13, title: "بازسازی دندان‌های اندو شده و پست و کور ریختگی" },
+              { num: 14, title: "ترمیم‌های موقت در پروتز ثابت (Provisional)" },
+              { num: 15, title: "کنترل مایعات بافتی و آماده‌سازی لثه برای قالبگیری" },
+              { num: 16, title: "مواد و تکنیک‌های قالب‌گیری در پروتز ثابت" },
+              { num: 17, title: "کست‌های کار و دای‌های مجزا" },
+              { num: 18, title: "مانت کردن کست‌ها در آرتیکولاتور" },
+              { num: 19, title: "تکنیک موم‌گذاری فریم‌ورک‌ها (Wax Pattern)" },
+              { num: 20, title: "سیستم‌های اسپروداکشن و سیلندربندی" },
+              { num: 21, title: "ریختگری آلیاژهای دندانی و تمیزکاری کستینگ" },
+              { num: 22, title: "امتحان فریم‌ورک فلزی در دهان (Try-in)" },
+              { num: 23, title: "انتخاب رنگ دندان و زیبایی در سرامیک" },
+              { num: 24, title: "لحیم‌کاری و اتصالات پروتز ثابت" },
+              { num: 25, title: "سمان‌های دندانپزشکی و تکنیک سمان کردن نهایی" },
+              { num: 26, title: "نگهداری و مراقبت‌های بعد از تحویل روکش" }
+            ]
+          },
+          {
+            id: "prostho_mccracken",
+            name: "Carr AB. McCracken's Removable Partial Prosthodontics",
+            edition: "13th Ed. 2016",
+            condition: "تمام فصول کتاب",
+            chapters: [
+              { num: 1, title: "مقدمه و طبقه‌بندی قوس‌های بی‌دندانی (Kennedy)" },
+              { num: 2, title: "اتصال‌دهنده‌های اصلی و فرعی (Major & Minor Connectors)" },
+              { num: 3, title: "تکیه‌گاه‌ها و نشیمنگاه‌ها (Rests & Rest Seats)" },
+              { num: 4, title: "نگهدارنده‌های مستقیم و انواع کلاچ‌ها (Direct Retainers)" },
+              { num: 5, title: "نگهدارنده‌های غیرمستقیم (Indirect Retainers)" },
+              { num: 6, title: "ملاحظات بیومکانیک و حرکات پروتز متحرک پارسیل" },
+              { num: 7, title: "اصول طراحی پروتز پارسیل (RPD Design)" },
+              { num: 8, title: "سورویینگ کست‌های تشخیصی (Surveying)" },
+              { num: 9, title: "آماده‌سازی دهان و دندان‌های پایه قبل از قالب‌گیری" },
+              { num: 10, title: "قالب‌گیری فک در پروتز پارسیل متحرک" },
+              { num: 11, title: "روابط فکی در پروتز پارسیل متحرک" },
+              { num: 12, title: "امتحان فریم‌ورک فلزی در دهان" },
+              { num: 13, title: "چیدن دندان‌ها و تحویل پروتز پارسیل به بیمار" },
+              { num: 14, title: "ریلاین، ریبیس و تعمیرات پروتز پارسیل" }
+            ]
+          },
+          {
+            id: "prostho_rosenstiel",
+            name: "Rosenstiel S.F. Contemporary Fixed Prosthodontics",
+            edition: "6th Ed. 2023",
+            condition: "فصول ۷، ۸، ۹، ۱۰ و ۱۱ کتاب",
+            chapters: [
+              { num: 7, title: "اصول بیومکانیکی و بیولوژیکی تراش دندان" },
+              { num: 8, title: "تراش برای روکش‌های ریختگی کامل (Full Cast)" },
+              { num: 9, title: "تراش برای رستوریشن‌های متال‌سرامیک (PFM)" },
+              { num: 10, title: "تراش برای رستوریشن‌های تمام سرامیک (All-Ceramic)" },
+              { num: 11, title: "بازسازی دندان‌های به شدت تخریب‌شده و درمان ریشه شده" }
+            ]
+          },
+          {
+            id: "prostho_zarb",
+            name: "Zarb G, Hobkirk J. Prosthodontic Treatment for Edentulous Patients",
+            edition: "13th Ed. 2013",
+            condition: "کلیه فصول به جز ۱۸، ۱۹، ۲۰، ۲۱ و ۲۲",
+            chapters: [
+              { num: 1, title: "عواقب بی‌دندانی و بیولوژی بافت‌های نشیمنگاه پروتز" },
+              { num: 2, title: "معاینه و آماده‌سازی فک بی‌دندان برای پروتز کامل" },
+              { num: 3, title: "قالب‌گیری اولیه و تهیه تری اختصاصی" },
+              { num: 4, title: "بوردر مولدینگ و قالب‌گیری نهایی فک بی‌دندان" },
+              { num: 5, title: "تهیه بیس‌پلیت، رکوردریم و روابط فکی عمودی و افقی" },
+              { num: 6, title: "انتخاب و چیدمان دندان‌های مصنوعی کامل" },
+              { num: 7, title: "امتحان پروتز کامل در مرحله موم‌گذاری (Wax Try-in)" },
+              { num: 8, title: "مفلد کردن، آکریل‌ریزی و پخت دست‌دندان" },
+              { num: 9, title: "تنظیم اکلوزال و تحویل دست دندان کامل به بیمار" },
+              { num: 10, title: "مشکلات پس از تحویل دست‌دندان و راه‌حل‌ها" },
+              { num: 11, title: "ریلاین و ریبیس در پروتز کامل" },
+              { num: 12, title: "اوردنچرهای متکی بر ریشه و ایمپلنت" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "surgery",
+        title: "جراحی دهان و فک و صورت",
+        books: [
+          {
+            id: "surgery_hupp",
+            name: "Contemporary Oral and Maxillofacial Surgery, James Hupp",
+            edition: "7th Ed. 2019",
+            condition: "تمام فصول کتاب",
+            chapters: [
+              { num: 1, title: "ارزیابی پزشکی و سیستمیک بیمار کاندید جراحی دهان" },
+              { num: 2, title: "اصول آسپسی و کنترل عفونت در اتاق عمل دندانپزشکی" },
+              { num: 3, title: "بیومکانیک و وسایل جراحی کشیدن دندان (Elevator & Forceps)" },
+              { num: 4, title: "تکنیک کشیدن بدون عارضه دندان‌های دائمی" },
+              { num: 5, title: "تکنیک کشیدن جراحی و پیچیده دندان‌ها" },
+              { num: 6, title: "جراحی دندان‌های نهفته (عقل، نیش و پرمولرها)" },
+              { num: 7, title: "عوارض خارج کردن دندان‌ها و پیشگیری از آن" },
+              { num: 8, title: "کنترل خونریزی بعد از کشیدن دندان و هموستاز" },
+              { num: 9, title: "جراحی‌های پیش‌پروتزی بافت نرم و استخوان" },
+              { num: 10, title: "اصول اولیه ایمپلنتولوژی دندانی" },
+              { num: 11, title: "عفونیت‌های دندانی ادنتوژنیک حاد و فضاهای فاسیال" },
+              { num: 12, title: "درمان دارویی و جراحی آبسه‌های صورتی" },
+              { num: 13, title: "فیستول‌ها و عوارض سینوس ماگزیلا مرتبط با کشیدن دندان" },
+              { num: 14, title: "اصول بیوپسی و نمونه‌برداری از ضایعات دهان" },
+              { num: 15, title: "جراحی کیست‌ها و تومورهای خوش‌خیم فک" },
+              { num: 16, title: "ترومای فک و صورت و شکستگی‌های مندیبل و ماگزیلا" },
+              { num: 17, title: "اصول جراحی‌های ارتوگناتیک فکین" }
+            ]
+          },
+          {
+            id: "surgery_malamed",
+            name: "Malamed S. Handbook of Local Anesthesia",
+            edition: "7th Ed. 2019",
+            condition: "فصول ۱ تا ۱۸ کتاب",
+            chapters: [
+              { num: 1, title: "فیزیولوژی هدایت عصبی و پتانسیل عمل" },
+              { num: 2, title: "فارماکولوژی بی‌حس‌کننده‌های موضعی (آمیدها و استرها)" },
+              { num: 3, title: "فارماکولوژی منقبض‌کننده‌های عروقی (واپروپرسورها)" },
+              { num: 4, title: "اثرات سیستمیک و سرنوشت داروهای بی‌حسی در بدن" },
+              { num: 5, title: "سرنگ دندانپزشکی، کارپول و سیستم تزریق" },
+              { num: 6, title: "سوزن‌های دندانپزشکی و گیج مناسب تزریق" },
+              { num: 7, title: "آماده‌سازی کارپول و اصول استریل تزریق" },
+              { num: 8, title: "تکنیک‌های بی‌حسی فک بالا: ارتشاحی و سوپراپریوستئال" },
+              { num: 9, title: "بلاک عصب آلوئولار فوقانی خلفی (PSA)" },
+              { num: 10, title: "بلاک اعصاب آلوئولار قدامی و میانی (ASA & MSA)" },
+              { num: 11, title: "بلاک عصب پالاتن بزرگ و نازوپالاتن (GP & NP)" },
+              { num: 12, title: "تکنیک‌های تکمیلی فک بالا (اینترالیگامانتاری و داخل پالپ)" },
+              { num: 13, title: "بلاک عصب آلوئولار تحتانی مندیبل (IANB)" },
+              { num: 14, title: "تکنیک‌های گو-گیتس و وازیرانی-آکینوزی (Gow-Gates & Akinosi)" },
+              { num: 15, title: "بلاک عصب منتال، باکال و اینسایسیو" },
+              { num: 16, title: "عوارض موضعی بی‌حسی (هماتوم، فلج عصب فاسیال و تریسموس)" },
+              { num: 17, title: "عوارض سیستمیک بی‌حسی، مسمومیت و آلرژی" },
+              { num: 18, title: "ملاحظات بی‌حسی در بیماران با ریسک پزشکی خاص" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "resto",
+        title: "دندانپزشکی ترمیمی",
+        books: [
+          {
+            id: "resto_sturdevant",
+            name: "Sturdevant's Art and Science of Operative Dentistry (Andre Ritter)",
+            edition: "7th Ed. 2018",
+            condition: "فصول ۱ (ص ۱-۱۵)، ۲، ۳، ۴، ۵، ۹، ۱۰ و ۱۳ (ص ۴۶۱-۴۸۴)",
+            chapters: [
+              { num: 1, title: "مبانی بالینی دندانپزشکی ترمیمی و بیولوژی دندان (ص ۱-۱۵)" },
+              { num: 2, title: "پوسیدگی‌شناسی: اتیولوژی، ارزیابی خطر و کنترل غیرتهاجمی" },
+              { num: 3, title: "ارزیابی کلینیکی، معاینه، تشخیص و طرح درمان ترمیمی" },
+              { num: 4, title: "اصول آماده‌سازی حفره و نام‌گذاری سطوح دندانی" },
+              { num: 5, title: "محافظت پالپ، لاینرها، بیس‌ها و باندینگ‌های عاجی" },
+              { num: 9, title: "ترمیم‌های رزین کامپوزیت خلفی (کلاس ۱ و ۲)" },
+              { num: 10, title: "ترمیم‌های رزین کامپوزیت قدامی (کلاس ۳، ۴ و ۵)" },
+              { num: 13, title: "ترمیم‌های آمالگام پیچیده و بیلدآپ‌های دندانی (ص ۴۶۱-۴۸۴)" }
+            ]
+          },
+          {
+            id: "resto_summit",
+            name: "Summit's Fundamentals of Operative Dentistry: A Contemporary Approach",
+            edition: "4th Ed. 2013",
+            condition: "فصل ۶، ۷، ۹ (از مبحث باندینگ تا صفحه ۲۱۷)، ۱۰ و ۱۱",
+            chapters: [
+              { num: 6, title: "ایزولاسیون و کاربرد رابردم در ترمیمی" },
+              { num: 7, title: "سیستم‌های ادهزیو و نسل‌های باندینگ مینا و عاج" },
+              { num: 9, title: "باندینگ و اصول ترمیم‌های چسبنده (تا صفحه ۲۱۷)" },
+              { num: 10, title: "مواد کامپوزیتی مستقیم و تکنیک‌های لایت‌کیور" },
+              { num: 11, title: "ترمیم‌های کامپوزیت مستقیم و فینیشینگ و پالیشینگ" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "patho",
+        title: "آسیب‌شناسی دهان و فک و صورت",
+        books: [
+          {
+            id: "patho_neville",
+            name: "Neville B, Damm DD. Oral and Maxillofacial Pathology",
+            edition: "5th Ed. 2024",
+            condition: "کلیه فصول به جز ۱، ۲، ۴، ۸، ۱۷، ۱۸ و ۱۹",
+            chapters: [
+              { num: 3, title: "عفونت‌های باکتریایی، قارچی و ویروسی دهان و فک" },
+              { num: 5, title: "آلرژی و بیماری‌های ایمونولوژیک بافت‌های دهان" },
+              { num: 6, title: "ضایعات اپیتلیومی و ضایعات پیش‌سرطانی دهان (دیسپلازی و لوکوپلاکیا)" },
+              { num: 7, title: "بیماری‌ها و تومورهای غدد بزاقی (پلئومورفیک آدنوما و...)" },
+              { num: 9, title: "تومورهای بافت نرم (مزودرمال، فیبروما و همانژیوم)" },
+              { num: 10, title: "اختلالات خونی و بدخیمی‌های لنفوئیدی (لوکمی و لنفوم)" },
+              { num: 11, title: "بیماری‌های غیرنئوپلاستیک استخوان (پاژه و استئودیستروفی)" },
+              { num: 12, title: "کیست‌های ادنتوژنیک و تکاملی فکین (رادیکولار و دنتی‌ژروس)" },
+              { num: 13, title: "تومورهای ادنتوژنیک (آملوبلاستوما و ادنتوما)" },
+              { num: 14, title: "تظاهرات دهانی بیماری‌های متابولیک و سیستمیک" },
+              { num: 15, title: "تومورهای بدخیم اولیه و متاستاتیک استخوان‌های فک" },
+              { num: 16, title: "بیماری‌های پوستی با تظاهرات در مخاط دهان و سروگردن" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "ortho",
+        title: "ارتودانتیکس",
+        books: [
+          {
+            id: "ortho_proffit",
+            name: "Contemporary Orthodontics. William R. Proffit",
+            edition: "6th Ed. 2019",
+            condition: "فصول ۱، ۳، ۴، ۵، ۶، ۷، ۸، ۱۱، ۱۲، ۱۳ + بخش‌های منتخب فصول ۲، ۹، ۱۰، ۱۴ و ۱۸",
+            chapters: [
+              { num: 1, title: "مال‌اکلوژن و زیبایی صورت در دنیای معاصر" },
+              { num: 2, title: "مفاهیم رشد و نمو کرانیوفاسیال (ص ۱۸ تا ۴۷)" },
+              { num: 3, title: "مراحل اولیه رشد دندانی و تکامل اکلوژن" },
+              { num: 4, title: "اتیولوژی و علل به وجود آورنده مشکلات ارتودنسی" },
+              { num: 5, title: "تشخیص جامع در ارتودنسی و فرموله کردن لیست مشکلات" },
+              { num: 6, title: "طرح درمان ارتودنسی و محدودیت‌های درمان" },
+              { num: 7, title: "بیولوژی حرکت ارتودنتیک دندان و پاسخ بافت‌ها به نیرو" },
+              { num: 8, title: "بیومکانیک، کنترل نیروها و انکوریج" },
+              { num: 9, title: "تجهیزات ارتودنسی و انکوریج اسکلتال (ص ۲۷۶-۲۷۸ و ۲۸۸-۲۹۱)" },
+              { num: 10, title: "براکت‌ها، وایرهای ارتودنسی و خواص فیزیکی (ص ۳۱۰ تا ۳۱۵)" },
+              { num: 11, title: "درمان‌های پیشگیرانه در کودکان خردسال" },
+              { num: 12, title: "مدیریت مشکلات دندانی در دوره دندانی مختلط" },
+              { num: 13, title: "درمان ارتوپدیک و فانکشنال مشکلات اسکلتی در حال رشد" },
+              { num: 14, title: "درمان جامع ارتودنسی ثابت در نوجوانان (بجز صفحات ۴۶۲-۴۶۵ و ۴۷۲-۴۷۶)" },
+              { num: 18, title: "ریتنشن و نگهداری نتایج درمان ارتودنسی (ص ۵۷۹ تا ۵۸۹)" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "community",
+        title: "سلامت دهان و دندانپزشکی اجتماعی",
+        books: [
+          {
+            id: "community_melli",
+            name: "کتاب ملی سلامت دهان و دندانپزشکی اجتماعی (تألیف جهاد دانشگاهی)",
+            edition: "چاپ اول ۱۳۹۴",
+            condition: "فصول ۱ تا ۱۶ کتاب",
+            chapters: [
+              { num: 1, title: "مفاهیم سلامت و سلامت عمومی دهان و دندان" },
+              { num: 2, title: "اصول اپیدمیولوژی در دندانپزشکی جامعه‌نگر" },
+              { num: 3, title: "شاخص‌های پوسیدگی دندان (DMFT و dmft)" },
+              { num: 4, title: "شاخص‌های بیماری‌های پریودنتال و بهداشت دهان" },
+              { num: 5, title: "فلوراید و نقش آن در پیشگیری از پوسیدگی دندان" },
+              { num: 6, title: "روش‌های سیستمیک دریافت فلوراید (آب و نمک)" },
+              { num: 7, title: "روش‌های موضعی فلورایدتراپی (وارنیش و ژل)" },
+              { num: 8, title: "سمیت و فلوئوروزیس دندانی و اسکلتی" },
+              { num: 9, title: "فیشورسیلانت و محافظت از شیارهای دندان" },
+              { num: 10, title: "آموزش بهداشت و ارتقای سلامت دهان در جامعه" },
+              { num: 11, title: "رژیم غذایی، قندها و سلامت دندان‌ها" },
+              { num: 12, title: "کنترل عفونت و مدیریت پسماند در کلینیک‌های دولتی" },
+              { num: 13, title: "غربالگری و طرح‌های غربالگری در مدارس" },
+              { num: 14, title: "سنجش نیازهای سلامت دهان و برنامه‌ریزی سلامت" },
+              { num: 15, title: "اقتصاد سلامت و بیمه‌های دندانپزشکی در ایران" },
+              { num: 16, title: "ساختار نظام سلامت و شبکه‌های بهداشتی درمانی کشور" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "materials",
+        title: "مواد دندانی",
+        books: [
+          {
+            id: "materials_craig",
+            name: "Craig's Restorative Dental Materials",
+            edition: "14th Ed. 2019",
+            condition: "فصول ۴، ۱۰، ۱۲ و ۱۴ کتاب",
+            chapters: [
+              { num: 4, title: "خواص سطحی، کشش سطحی و ادهزیون در مواد دندانی" },
+              { num: 10, title: "رزین‌های کامپوزیتی و سیستم‌های پلیمری ترمیمی" },
+              { num: 12, title: "سرامیک‌های دندانی و زیرکونیا و سیستم‌های CAD/CAM" },
+              { num: 14, title: "آلیاژهای دندانی ریختگی، متالورژی و فریم‌ورک‌ها" }
+            ]
+          },
+          {
+            id: "materials_vannoort",
+            name: "Introduction to Dental Materials, Van Noort",
+            edition: "5th Ed. 2024",
+            condition: "فصول ۲.۲، ۲.۳، ۲.۵، ۳.۴، ۳.۵ و ۳.۶ کتاب",
+            chapters: [
+              { num: 2.2, title: "بخش ۲.۲: پلیمرهای دندانی و مواد رزینی بیس" },
+              { num: 2.3, title: "بخش ۲.۳: رزین کامپوزیت‌های دندانی مدرن" },
+              { num: 2.5, title: "بخش ۲.5: سمان‌های گلاس آینومر سنتی و رزینی" },
+              { num: 3.4, title: "بخش ۳.۴: آلیاژهای دندانی پایه و نجیب" },
+              { num: 3.5, title: "بخش ۳.۵: مواد قالب‌گیری الاستومری و هیدروکلوئیدها" },
+              { num: 3.6, title: "بخش ۳.۶: فرآورده‌های گچی و کست‌های تشخیصی" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "english",
+        title: "زبان تخصصی دندانپزشکی",
+        books: [
+          {
+            id: "eng_reference",
+            name: "مفاهیم متون و واژگان تخصصی کتب مرجع آزمون دستیاری ۴۰",
+            edition: "انگلیسی رفرنس‌های مصوب",
+            condition: "تمامی کتب مرجع معرفی شده",
+            chapters: [
+              { num: 1, title: "اصطلاحات و واژگان تخصصی ریشه‌شناسی و اندودانتیکس" },
+              { num: 2, title: "اصطلاحات پاتولوژی و ضایعات مخاط دهان و صورت" },
+              { num: 3, title: "واژگان بیومکانیک، ارتودنسی و مواد دندانی" },
+              { num: 4, title: "اصطلاحات جراحی فک و صورت و پریودانتیکس" },
+              { num: 5, title: "درک مطلب تخصصی (Reading Comprehension) مقالات دندانپزشکی" }
+            ]
+          }
+        ]
+      }
+    ];
+
+    const SUPPLEMENTARY_TYPES = [
+      { id: "parseh", name: "#پارسه", icon: "fa-book" },
+      { id: "parseh_ch", name: "#پارسه_فصل_به_فصل", icon: "fa-list-ol" },
+      { id: "parseh_vid", name: "#ویدیو_پارسه", icon: "fa-circle-play" },
+      { id: "parseh_test", name: "#تست_پارسه", icon: "fa-vial" },
+      { id: "qbank", name: "#بانک_آزمون", icon: "fa-database" },
+      { id: "cdr", name: "#سی‌دی‌آر", icon: "fa-compact-disc" },
+      { id: "espresso", name: "#اسپرسو", icon: "fa-mug-hot" },
+      { id: "derakhti", name: "#درختی", icon: "fa-diagram-project" },
+      { id: "avid", name: "#آوید", icon: "fa-lightbulb" },
+      { id: "exir", name: "#اکسیر", icon: "fa-flask" },
+      { id: "ddq", name: "#DDQ", icon: "fa-circle-question" },
+      { id: "voice_fast", name: "#ویس_مرور_سریع", icon: "fa-microphone-lines" },
+      { id: "nokat_summary", name: "#جمع‌بندی_نکات", icon: "fa-highlighter" },
+      { id: "atlas", name: "#اطلس", icon: "fa-images" },
+      { id: "artinteb", name: "#آرتین_طب", icon: "fa-building-columns" },
+      { id: "book_summary", name: "#خلاصه_کتاب", icon: "fa-file-lines" },
+      { id: "misc", name: "#متفرقه", icon: "fa-folder-open" }
+    ];
+  </script>
+
+  <script>
+    const STORAGE_KEY_SYLLABUS = "dent_residency_custom_syllabus_v3";
+    const STORAGE_KEY_OFFICIAL_CHECKS = "dent_residency_official_checks_v3";
+    const STORAGE_KEY_OFFICIAL_REVIEWS = "dent_residency_official_reviews_v3";
+    const STORAGE_KEY_SUPP_SUBJECTS = "dent_residency_supp_subjects_v3";
+    const STORAGE_KEY_SUMMARIES = "dent_residency_summaries_v3";
+    const STORAGE_KEY_LOGS = "dent_residency_studylogs_v3";
+    const STORAGE_KEY_THEME = "dent_residency_theme";
+
+    let state = {
+      syllabus: [],
+      officialChecks: {},
+      officialExtraReviews: {},
+      suppBySubject: {},
+      summaryNotes: {},
+      studyLogs: []
+    };
+
+    function loadAppState() {
+      try {
+        const savedSyl = localStorage.getItem(STORAGE_KEY_SYLLABUS);
+        state.syllabus = savedSyl ? JSON.parse(savedSyl) : JSON.parse(JSON.stringify(DEFAULT_SYLLABUS));
+        state.officialChecks = JSON.parse(localStorage.getItem(STORAGE_KEY_OFFICIAL_CHECKS)) || {};
+        state.officialExtraReviews = JSON.parse(localStorage.getItem(STORAGE_KEY_OFFICIAL_REVIEWS)) || {};
+        state.suppBySubject = JSON.parse(localStorage.getItem(STORAGE_KEY_SUPP_SUBJECTS)) || {};
+        state.summaryNotes = JSON.parse(localStorage.getItem(STORAGE_KEY_SUMMARIES)) || {};
+        state.studyLogs = JSON.parse(localStorage.getItem(STORAGE_KEY_LOGS)) || [];
+      } catch (e) {
+        console.error("خطا در خواندن اطلاعات از حافظه:", e);
+        state.syllabus = JSON.parse(JSON.stringify(DEFAULT_SYLLABUS));
+      }
+    }
+
+    function saveAppState() {
+      try {
+        localStorage.setItem(STORAGE_KEY_SYLLABUS, JSON.stringify(state.syllabus));
+        localStorage.setItem(STORAGE_KEY_OFFICIAL_CHECKS, JSON.stringify(state.officialChecks));
+        localStorage.setItem(STORAGE_KEY_OFFICIAL_REVIEWS, JSON.stringify(state.officialExtraReviews));
+        localStorage.setItem(STORAGE_KEY_SUPP_SUBJECTS, JSON.stringify(state.suppBySubject));
+        localStorage.setItem(STORAGE_KEY_SUMMARIES, JSON.stringify(state.summaryNotes));
+        localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(state.studyLogs));
+        updateGlobalProgress();
+      } catch (e) {
+        console.error("خطا در ذخیره‌سازی داده‌ها:", e);
+      }
+    }
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem(STORAGE_KEY_THEME);
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem(STORAGE_KEY_THEME, isDark ? 'dark' : 'light');
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-teal-50', 'dark:bg-teal-950/60', 'text-teal-700', 'dark:text-teal-300', 'font-semibold', 'border', 'border-teal-200', 'dark:border-teal-800/60');
+        btn.classList.add('text-slate-600', 'dark:text-slate-400');
+      });
+
+      const selectedTab = document.getElementById(`tabContent-${tabId}`);
+      const selectedBtn = document.getElementById(`tabBtn-${tabId}`);
+
+      if (selectedTab && selectedBtn) {
+        selectedTab.classList.remove('hidden');
+        selectedBtn.classList.remove('text-slate-600', 'dark:text-slate-400');
+        selectedBtn.classList.add('active', 'bg-teal-50', 'dark:bg-teal-950/60', 'text-teal-700', 'dark:text-teal-300', 'font-semibold', 'border', 'border-teal-200', 'dark:border-teal-800/60');
+      }
+    }
+
+    /* ========================================================
+       SECTION 1: RENDERING OFFICIAL SYLLABUS
+       ======================================================== */
+    function renderOfficialSyllabus() {
+      const container = document.getElementById('officialCoursesContainer');
+      container.innerHTML = '';
+
+      state.syllabus.forEach(course => {
+        const courseCard = document.createElement('div');
+        courseCard.className = "bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm transition hover:border-slate-300 dark:hover:border-slate-700";
+        courseCard.id = `course-${course.id}`;
+
+        let booksHTML = '';
+        course.books.forEach(book => {
+          let chaptersHTML = '';
+
+          book.chapters.forEach((chap) => {
+            const chapKey = `${book.id}_ch_${chap.num}`;
+            const checks = state.officialChecks[chapKey] || {};
+            const extraCount = state.officialExtraReviews[chapKey] || 0;
+
+            let extraChecksHTML = '';
+            for (let i = 1; i <= extraCount; i++) {
+              const reviewKey = `extra_${i}`;
+              const isChecked = !!checks[reviewKey];
+              extraChecksHTML += `
+                <label class="inline-flex items-center gap-1.5 cursor-pointer bg-slate-100 dark:bg-slate-800/80 px-2 py-1 rounded-md text-[11px] hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                  <input type="checkbox" class="custom-check" ${isChecked ? 'checked' : ''} onchange="toggleOfficialCheck('${chapKey}', '${reviewKey}', this.checked)">
+                  <span class="text-slate-600 dark:text-slate-300">مرور ${i + 3}</span>
+                </label>
+              `;
+            }
+
+            chaptersHTML += `
+              <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-700/50 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div class="flex items-center gap-2.5 flex-1">
+                  <span class="w-7 h-7 rounded-md bg-teal-100 dark:bg-teal-900/60 text-teal-800 dark:text-teal-200 text-xs font-bold flex items-center justify-center shrink-0">
+                    ${chap.num}
+                  </span>
+                  <div class="flex-1 flex items-center gap-2">
+                    <span id="titleSpan_${chapKey}" class="text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-200 leading-relaxed">
+                      فصل ${chap.num}: ${chap.title}
+                    </span>
+                    <button onclick="editChapterTitle('${course.id}', '${book.id}', ${chap.num})" title="ویرایش عنوان مبحث" class="text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 p-1 text-xs transition">
+                      <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button onclick="deleteChapter('${course.id}', '${book.id}', ${chap.num})" title="حذف این مبحث" class="text-slate-300 hover:text-rose-500 p-1 text-xs transition">
+                      <i class="fa-regular fa-trash-can"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="flex items-center flex-wrap gap-2 mr-9 md:mr-0">
+                  <label class="inline-flex items-center gap-1.5 cursor-pointer bg-white dark:bg-slate-800 px-2 py-1 rounded-md text-[11px] border border-slate-200 dark:border-slate-700">
+                    <input type="checkbox" class="custom-check" ${checks.r1 ? 'checked' : ''} onchange="toggleOfficialCheck('${chapKey}', 'r1', this.checked)">
+                    <span class="text-slate-700 dark:text-slate-300 font-medium">دور ۱</span>
+                  </label>
+                  <label class="inline-flex items-center gap-1.5 cursor-pointer bg-white dark:bg-slate-800 px-2 py-1 rounded-md text-[11px] border border-slate-200 dark:border-slate-700">
+                    <input type="checkbox" class="custom-check" ${checks.r2 ? 'checked' : ''} onchange="toggleOfficialCheck('${chapKey}', 'r2', this.checked)">
+                    <span class="text-slate-700 dark:text-slate-300 font-medium">دور ۲</span>
+                  </label>
+                  <label class="inline-flex items-center gap-1.5 cursor-pointer bg-white dark:bg-slate-800 px-2 py-1 rounded-md text-[11px] border border-slate-200 dark:border-slate-700">
+                    <input type="checkbox" class="custom-check" ${checks.r3 ? 'checked' : ''} onchange="toggleOfficialCheck('${chapKey}', 'r3', this.checked)">
+                    <span class="text-slate-700 dark:text-slate-300 font-medium">دور ۳</span>
+                  </label>
+
+                  ${extraChecksHTML}
+
+                  <button onclick="addOfficialExtraReview('${chapKey}')" class="text-[11px] px-2 py-1 bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-300 border border-dashed border-teal-300 dark:border-teal-700 rounded-md hover:bg-teal-100 dark:hover:bg-teal-900 transition flex items-center gap-1" title="افزودن یک دور مرور جدید">
+                    <i class="fa-solid fa-plus text-[10px]"></i> مرور
+                  </button>
+                </div>
+              </div>
+            `;
+          });
+
+          booksHTML += `
+            <div class="border-t border-slate-200 dark:border-slate-800 p-4 sm:p-5 space-y-3">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2">
+                <div>
+                  <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                    <i class="fa-solid fa-book-open text-teal-600 dark:text-teal-400 text-xs"></i>
+                    ${book.name}
+                  </h4>
+                  <div class="flex items-center gap-2 mt-1">
+                    <span class="text-[11px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-0.5 rounded font-mono">${book.edition}</span>
+                    <span class="text-[11px] bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/40 px-2 py-0.5 rounded font-medium">محدوده: ${book.condition}</span>
+                  </div>
+                </div>
+                <div class="text-xs text-slate-400">${book.chapters.length} مبحث تفکیک شده</div>
+              </div>
+
+              <div class="space-y-2 pt-1">
+                ${chaptersHTML}
+              </div>
+
+              <div class="mt-4 p-3 bg-slate-100/70 dark:bg-slate-800/70 rounded-xl border border-dashed border-slate-300 dark:border-slate-700">
+                <form onsubmit="handleAddChapterSubmit(event, '${course.id}', '${book.id}')" class="flex flex-col sm:flex-row items-center gap-2">
+                  <div class="w-full sm:w-28">
+                    <input type="number" step="any" min="0" placeholder="شماره فصل" required class="new-chap-num w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-teal-500">
+                  </div>
+                  <div class="w-full sm:flex-1">
+                    <input type="text" placeholder="عنوان و سرفصل دقیق مبحث..." required class="new-chap-title w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-teal-500">
+                  </div>
+                  <button type="submit" class="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 active:scale-95 text-white px-4 py-1.5 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>افزودن مبحث (مرتب‌سازی خودکار عددی)</span>
+                  </button>
+                </form>
+              </div>
+            </div>
+          `;
+        });
+
+        courseCard.innerHTML = `
+          <div class="p-4 sm:p-5 flex items-center justify-between cursor-pointer select-none bg-slate-50/50 dark:bg-slate-800/30" onclick="toggleCourseAccordion('${course.id}')">
+            <div class="flex items-center gap-3">
+              <span class="w-9 h-9 rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center font-bold text-sm">
+                <i class="fa-solid fa-book-medical"></i>
+              </span>
+              <div>
+                <h3 class="text-base font-bold text-slate-900 dark:text-white">${course.title}</h3>
+                <span class="text-xs text-slate-500 dark:text-slate-400">${course.books.length} رفرنس رسمی • تمام فصول تفکیک‌شده</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span id="courseProgressBadge-${course.id}" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">0%</span>
+              <i id="courseChevron-${course.id}" class="fa-solid fa-chevron-down text-slate-400 text-sm transition-transform duration-300"></i>
+            </div>
+          </div>
+          <div id="courseBody-${course.id}" class="hidden">
+            ${booksHTML}
+          </div>
+        `;
+
+        container.appendChild(courseCard);
+      });
+    }
+
+    function toggleCourseAccordion(courseId) {
+      const body = document.getElementById(`courseBody-${courseId}`);
+      const chevron = document.getElementById(`courseChevron-${courseId}`);
+      if (body.classList.contains('hidden')) {
+        body.classList.remove('hidden');
+        chevron.classList.add('rotate-180');
+      } else {
+        body.classList.add('hidden');
+        chevron.classList.remove('rotate-180');
+      }
+    }
+
+    function expandAllOfficial(expand = true) {
+      state.syllabus.forEach(course => {
+        const body = document.getElementById(`courseBody-${course.id}`);
+        const chevron = document.getElementById(`courseChevron-${course.id}`);
+        if (body && chevron) {
+          if (expand) {
+            body.classList.remove('hidden');
+            chevron.classList.add('rotate-180');
+          } else {
+            body.classList.add('hidden');
+            chevron.classList.remove('rotate-180');
+          }
+        }
+      });
+    }
+
+    function toggleOfficialCheck(chapKey, checkType, isChecked) {
+      if (!state.officialChecks[chapKey]) {
+        state.officialChecks[chapKey] = {};
+      }
+      state.officialChecks[chapKey][checkType] = isChecked;
+      saveAppState();
+    }
+
+    function addOfficialExtraReview(chapKey) {
+      const current = state.officialExtraReviews[chapKey] || 0;
+      state.officialExtraReviews[chapKey] = current + 1;
+      saveAppState();
+      renderOfficialSyllabus();
+    }
+
+    function editChapterTitle(courseId, bookId, chapNum) {
+      const course = state.syllabus.find(c => c.id === courseId);
+      if (!course) return;
+      const book = course.books.find(b => b.id === bookId);
+      if (!book) return;
+      const chapter = book.chapters.find(ch => ch.num == chapNum);
+      if (!chapter) return;
+
+      const newTitle = prompt(`ویرایش عنوان فصل ${chapNum}:`, chapter.title);
+      if (newTitle !== null && newTitle.trim()) {
+        chapter.title = newTitle.trim();
+        saveAppState();
+        renderOfficialSyllabus();
+        renderSummariesSection();
+        showNotification(`عنوان فصل ${chapNum} با موفقیت به‌روزرسانی شد.`);
+      }
+    }
+
+    function deleteChapter(courseId, bookId, chapNum) {
+      if (confirm(`آیا از حذف فصل ${chapNum} اطمینان دارید؟`)) {
+        const course = state.syllabus.find(c => c.id === courseId);
+        if (!course) return;
+        const book = course.books.find(b => b.id === bookId);
+        if (!book) return;
+        book.chapters = book.chapters.filter(ch => ch.num != chapNum);
+        saveAppState();
+        renderOfficialSyllabus();
+        renderSummariesSection();
+        showNotification(`فصل ${chapNum} حذف شد.`);
+      }
+    }
+
+    function handleAddChapterSubmit(e, courseId, bookId) {
+      e.preventDefault();
+      const form = e.target;
+      const numInput = form.querySelector('.new-chap-num');
+      const titleInput = form.querySelector('.new-chap-title');
+
+      const numVal = parseFloat(numInput.value);
+      const titleVal = titleInput.value.trim();
+
+      if (isNaN(numVal) || !titleVal) {
+        alert("لطفاً شماره فصل و عنوان معتبر وارد کنید.");
+        return;
+      }
+
+      const course = state.syllabus.find(c => c.id === courseId);
+      if (!course) return;
+      const book = course.books.find(b => b.id === bookId);
+      if (!book) return;
+
+      const existing = book.chapters.find(ch => ch.num == numVal);
+      if (existing) {
+        if (!confirm(`فصل با شماره ${numVal} از قبل وجود دارد. آیا مایل به جایگزینی/افزودن هستید؟`)) {
+          return;
+        }
+      }
+
+      book.chapters.push({ num: numVal, title: titleVal });
+      book.chapters.sort((a, b) => a.num - b.num);
+
+      saveAppState();
+      renderOfficialSyllabus();
+      renderSummariesSection();
+
+      numInput.value = '';
+      titleInput.value = '';
+      showNotification(`فصل ${numVal} با موفقیت در جایگاه عددی دقیق قرار گرفت.`);
+    }
+
+    function filterOfficialList() {
+      const q = document.getElementById('officialSearchInput').value.trim().toLowerCase();
+      state.syllabus.forEach(course => {
+        const card = document.getElementById(`course-${course.id}`);
+        if (!card) return;
+        const text = card.innerText.toLowerCase();
+        if (!q || text.includes(q)) {
+          card.classList.remove('hidden');
+          if (q) {
+            document.getElementById(`courseBody-${course.id}`)?.classList.remove('hidden');
+            document.getElementById(`courseChevron-${course.id}`)?.classList.add('rotate-180');
+          }
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    /* ========================================================
+       SECTION 2: SUPPLEMENTARY MATERIALS
+       ======================================================== */
+    function renderSupplementarySection() {
+      const container = document.getElementById('supplementaryBySubjectContainer');
+      container.innerHTML = '';
+
+      state.syllabus.forEach(course => {
+        const subjectCard = document.createElement('div');
+        subjectCard.className = "bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm transition";
+
+        const courseSuppData = state.suppBySubject[course.id] || {};
+        let totalTopicsForSubject = 0;
+        Object.values(courseSuppData).forEach(topicsList => {
+          totalTopicsForSubject += (topicsList || []).length;
+        });
+
+        let categoriesHTML = '';
+        SUPPLEMENTARY_TYPES.forEach(type => {
+          const topics = (courseSuppData[type.id] || []);
+
+          let topicsListHTML = '';
+          if (topics.length === 0) {
+            topicsListHTML = `<div class="text-[11px] text-slate-400 py-2">هنوز مبحثی برای این منبع ثبت نشده است.</div>`;
+          } else {
+            topics.forEach((topic, tIdx) => {
+              let extraChecksHTML = '';
+              const extraReviews = topic.extraReviews || [];
+              extraReviews.forEach((revVal, revIdx) => {
+                extraChecksHTML += `
+                  <label class="inline-flex items-center gap-1 cursor-pointer bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-[11px]">
+                    <input type="checkbox" class="custom-check" ${revVal ? 'checked' : ''} onchange="toggleCourseSuppExtraReview('${course.id}', '${type.id}', ${tIdx}, ${revIdx}, this.checked)">
+                    <span>مرور ${revIdx + 4}</span>
+                  </label>
+                `;
+              });
+
+              topicsListHTML += `
+                <div class="p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200/80 dark:border-slate-700/60 flex flex-col md:flex-row md:items-center justify-between gap-2.5">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-semibold text-slate-800 dark:text-slate-200">${topic.title}</span>
+                    <button onclick="editCourseSuppTopicTitle('${course.id}', '${type.id}', ${tIdx})" class="text-slate-400 hover:text-teal-600 text-xs">
+                      <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button onclick="deleteCourseSuppTopic('${course.id}', '${type.id}', ${tIdx})" class="text-slate-300 hover:text-rose-500 text-xs">
+                      <i class="fa-regular fa-trash-can"></i>
+                    </button>
+                  </div>
+
+                  <div class="flex items-center flex-wrap gap-1.5">
+                    <label class="inline-flex items-center gap-1 cursor-pointer bg-white dark:bg-slate-800 px-2 py-0.5 rounded text-[11px] border border-slate-200 dark:border-slate-700">
+                      <input type="checkbox" class="custom-check" ${topic.r1 ? 'checked' : ''} onchange="toggleCourseSuppCheck('${course.id}', '${type.id}', ${tIdx}, 'r1', this.checked)">
+                      <span>دور ۱</span>
+                    </label>
+                    <label class="inline-flex items-center gap-1 cursor-pointer bg-white dark:bg-slate-800 px-2 py-0.5 rounded text-[11px] border border-slate-200 dark:border-slate-700">
+                      <input type="checkbox" class="custom-check" ${topic.r2 ? 'checked' : ''} onchange="toggleCourseSuppCheck('${course.id}', '${type.id}', ${tIdx}, 'r2', this.checked)">
+                      <span>دور ۲</span>
+                    </label>
+                    <label class="inline-flex items-center gap-1 cursor-pointer bg-white dark:bg-slate-800 px-2 py-0.5 rounded text-[11px] border border-slate-200 dark:border-slate-700">
+                      <input type="checkbox" class="custom-check" ${topic.r3 ? 'checked' : ''} onchange="toggleCourseSuppCheck('${course.id}', '${type.id}', ${tIdx}, 'r3', this.checked)">
+                      <span>دور ۳</span>
+                    </label>
+
+                    ${extraChecksHTML}
+
+                    <button onclick="addCourseSuppExtraReview('${course.id}', '${type.id}', ${tIdx})" class="text-[10px] text-teal-600 dark:text-teal-400 border border-dashed border-teal-400 px-1.5 py-0.5 rounded hover:bg-teal-50 dark:hover:bg-slate-800">
+                      + مرور
+                    </button>
+                  </div>
+                </div>
+              `;
+            });
+          }
+
+          categoriesHTML += `
+            <div class="p-3.5 bg-white dark:bg-slate-900/90 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
+                  <div class="flex items-center gap-2">
+                    <i class="fa-solid ${type.icon} text-teal-600 dark:text-teal-400 text-xs"></i>
+                    <span class="text-xs font-bold text-slate-900 dark:text-slate-100">${type.name}</span>
+                    <span class="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500 px-1.5 py-0.5 rounded-full font-mono">${topics.length}</span>
+                  </div>
+                  <button onclick="promptAddCourseSuppTopic('${course.id}', '${course.title}', '${type.id}', '${type.name}')" class="text-[11px] bg-teal-50 dark:bg-teal-950/60 hover:bg-teal-100 dark:hover:bg-teal-900 text-teal-700 dark:text-teal-300 font-semibold px-2 py-1 rounded-md border border-teal-200 dark:border-teal-800 transition flex items-center gap-1">
+                    <i class="fa-solid fa-plus text-[9px]"></i> افزودن مبحث
+                  </button>
+                </div>
+                <div class="space-y-2 mt-2.5 max-h-56 overflow-y-auto pr-0.5">
+                  ${topicsListHTML}
+                </div>
+              </div>
+            </div>
+          `;
+        });
+
+        subjectCard.innerHTML = `
+          <div class="p-4 sm:p-5 flex items-center justify-between cursor-pointer select-none bg-slate-50/60 dark:bg-slate-800/40" onclick="toggleSuppSubjectAccordion('${course.id}')">
+            <div class="flex items-center gap-3">
+              <span class="w-9 h-9 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-bold text-sm">
+                <i class="fa-solid fa-layer-group"></i>
+              </span>
+              <div>
+                <h3 class="text-base font-bold text-slate-900 dark:text-white">منابع کمک‌آموزشی درس: ${course.title}</h3>
+                <span class="text-xs text-slate-500 dark:text-slate-400">${totalTopicsForSubject} مبحث کمک‌آموزشی ثبت‌شده در این درس</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <i id="suppChevron-${course.id}" class="fa-solid fa-chevron-down text-slate-400 text-sm transition-transform duration-300"></i>
+            </div>
+          </div>
+          <div id="suppSubjectBody-${course.id}" class="hidden p-4 sm:p-5 bg-slate-50/20 dark:bg-slate-950/20 border-t border-slate-200 dark:border-slate-800">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              ${categoriesHTML}
+            </div>
+          </div>
+        `;
+
+        container.appendChild(subjectCard);
+      });
+    }
+
+    function toggleSuppSubjectAccordion(courseId) {
+      const body = document.getElementById(`suppSubjectBody-${courseId}`);
+      const chevron = document.getElementById(`suppChevron-${courseId}`);
+      if (body.classList.contains('hidden')) {
+        body.classList.remove('hidden');
+        chevron.classList.add('rotate-180');
+      } else {
+        body.classList.add('hidden');
+        chevron.classList.remove('rotate-180');
+      }
+    }
+
+    function promptAddCourseSuppTopic(courseId, courseTitle, typeId, typeName) {
+      const title = prompt(`عنوان مبحث مطالعه‌شده در درس "${courseTitle}" برای منبع "${typeName}" را وارد کنید:`);
+      if (!title || !title.trim()) return;
+
+      if (!state.suppBySubject[courseId]) {
+        state.suppBySubject[courseId] = {};
+      }
+      if (!state.suppBySubject[courseId][typeId]) {
+        state.suppBySubject[courseId][typeId] = [];
+      }
+
+      state.suppBySubject[courseId][typeId].push({
+        id: 'supp_' + Date.now(),
+        title: title.trim(),
+        r1: false,
+        r2: false,
+        r3: false,
+        extraReviews: []
+      });
+
+      saveAppState();
+      renderSupplementarySection();
+      showNotification(`مبحث "${title.trim()}" به ${courseTitle} اضافه شد.`);
+    }
+
+    function toggleCourseSuppCheck(courseId, typeId, idx, roundKey, isChecked) {
+      if (state.suppBySubject[courseId] && state.suppBySubject[courseId][typeId] && state.suppBySubject[courseId][typeId][idx]) {
+        state.suppBySubject[courseId][typeId][idx][roundKey] = isChecked;
+        saveAppState();
+      }
+    }
+
+    function addCourseSuppExtraReview(courseId, typeId, idx) {
+      if (state.suppBySubject[courseId] && state.suppBySubject[courseId][typeId] && state.suppBySubject[courseId][typeId][idx]) {
+        const item = state.suppBySubject[courseId][typeId][idx];
+        if (!item.extraReviews) item.extraReviews = [];
+        item.extraReviews.push(false);
+        saveAppState();
+        renderSupplementarySection();
+      }
+    }
+
+    function toggleCourseSuppExtraReview(courseId, typeId, idx, revIdx, isChecked) {
+      if (state.suppBySubject[courseId] && state.suppBySubject[courseId][typeId] && state.suppBySubject[courseId][typeId][idx]) {
+        state.suppBySubject[courseId][typeId][idx].extraReviews[revIdx] = isChecked;
+        saveAppState();
+      }
+    }
+
+    function editCourseSuppTopicTitle(courseId, typeId, idx) {
+      const item = state.suppBySubject[courseId][typeId][idx];
+      const newTitle = prompt("ویرایش عنوان مبحث کمک‌آموزشی:", item.title);
+      if (newTitle && newTitle.trim()) {
+        item.title = newTitle.trim();
+        saveAppState();
+        renderSupplementarySection();
+      }
+    }
+
+    function deleteCourseSuppTopic(courseId, typeId, idx) {
+      if (confirm("آیا مایل به حذف این مبحث کمک‌آموزشی هستید؟")) {
+        state.suppBySubject[courseId][typeId].splice(idx, 1);
+        saveAppState();
+        renderSupplementarySection();
+      }
+    }
+
+    /* ========================================================
+       SECTION 3: SUMMARIES CHECKLIST (با ساختار تب آکاردئونی دروس)
+       ======================================================== */
+    function renderSummariesSection() {
+      const container = document.getElementById('summariesContainer');
+      container.innerHTML = '';
+
+      state.syllabus.forEach(course => {
+        const courseCard = document.createElement('div');
+        courseCard.className = "bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm transition";
+
+        let totalChapters = 0;
+        let completedSummaries = 0;
+
+        let chaptersHTML = '';
+        course.books.forEach(book => {
+          book.chapters.forEach(chap => {
+            totalChapters++;
+            const chapKey = `${book.id}_ch_${chap.num}`;
+            const summaryData = state.summaryNotes[chapKey] || { done: false, note: "" };
+            if (summaryData.done) completedSummaries++;
+
+            chaptersHTML += `
+              <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/70 dark:border-slate-700/60 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div class="flex-1">
+                  <div class="flex items-center gap-2">
+                    <label class="inline-flex items-center gap-2 cursor-pointer bg-purple-50 dark:bg-purple-950/50 px-2.5 py-1 rounded-lg border border-purple-200 dark:border-purple-800/50">
+                      <input type="checkbox" class="custom-check summary-check" ${summaryData.done ? 'checked' : ''} onchange="toggleSummaryDone('${chapKey}', '${course.id}', this.checked)">
+                      <span class="text-xs font-bold text-purple-700 dark:text-purple-300">خلاصه نوشته‌ام</span>
+                    </label>
+                    <span class="text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-200">فصل ${chap.num}: ${chap.title}</span>
+                  </div>
+                  <div class="text-[11px] text-slate-400 mt-1 mr-7">${book.name.split(',')[0]}</div>
+                </div>
+
+                <div class="w-full md:w-80 flex items-center gap-1.5">
+                  <input type="text" id="summaryNoteInput_${chapKey}" value="${summaryData.note || ''}" placeholder="نکات طلایی، شماره صفحه یا آدرس دفترچه..." class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-purple-500 focus:outline-none text-slate-700 dark:text-slate-200" onchange="updateSummaryNote('${chapKey}', this.value)">
+                  <button onclick="saveSummaryNoteBtn('${chapKey}')" title="ذخیره یادداشت" class="p-1.5 text-purple-600 hover:bg-purple-100 dark:hover:bg-purple-950 rounded-md text-xs transition">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                  </button>
+                </div>
+              </div>
+            `;
+          });
+        });
+
+        // کلیک روی هدر باعث باز شدن یا بسته شدن فقط همان درس می‌شود
+        courseCard.innerHTML = `
+          <div class="p-4 sm:p-5 flex items-center justify-between cursor-pointer select-none bg-slate-50/60 dark:bg-slate-800/40" onclick="toggleSummaryAccordion('${course.id}')">
+            <div class="flex items-center gap-3">
+              <span class="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-sm">
+                <i class="fa-solid fa-pen-nib"></i>
+              </span>
+              <div>
+                <h3 class="text-base font-bold text-slate-900 dark:text-white">خلاصه‌های درس: ${course.title}</h3>
+                <span class="text-xs text-slate-500 dark:text-slate-400">${totalChapters} مبحث رفرنس</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <span id="summaryBadge-${course.id}" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300">
+                ${completedSummaries} / ${totalChapters} خلاصه
+              </span>
+              <i id="summaryChevron-${course.id}" class="fa-solid fa-chevron-down text-slate-400 text-sm transition-transform duration-300"></i>
+            </div>
+          </div>
+          <div id="summaryBody-${course.id}" class="hidden p-4 sm:p-5 border-t border-slate-200 dark:border-slate-800 space-y-2.5 bg-slate-50/20 dark:bg-slate-950/20">
+            ${chaptersHTML}
+          </div>
+        `;
+        container.appendChild(courseCard);
+      });
+    }
+
+    function toggleSummaryAccordion(courseId) {
+      const body = document.getElementById(`summaryBody-${courseId}`);
+      const chevron = document.getElementById(`summaryChevron-${courseId}`);
+      if (body.classList.contains('hidden')) {
+        body.classList.remove('hidden');
+        chevron.classList.add('rotate-180');
+      } else {
+        body.classList.add('hidden');
+        chevron.classList.remove('rotate-180');
+      }
+    }
+
+    function toggleSummaryDone(chapKey, courseId, isChecked) {
+      if (!state.summaryNotes[chapKey]) {
+        state.summaryNotes[chapKey] = { done: false, note: "" };
+      }
+      state.summaryNotes[chapKey].done = isChecked;
+      saveAppState();
+      updateSummaryBadge(courseId);
+    }
+
+    function updateSummaryBadge(courseId) {
+      const course = state.syllabus.find(c => c.id === courseId);
+      if (!course) return;
+
+      let total = 0;
+      let done = 0;
+      course.books.forEach(b => {
+        b.chapters.forEach(ch => {
+          total++;
+          const k = `${b.id}_ch_${ch.num}`;
+          if (state.summaryNotes[k]?.done) done++;
+        });
+      });
+
+      const badge = document.getElementById(`summaryBadge-${courseId}`);
+      if (badge) {
+        badge.textContent = `${done} / ${total} خلاصه`;
+      }
+    }
+
+    function updateSummaryNote(chapKey, noteVal) {
+      if (!state.summaryNotes[chapKey]) {
+        state.summaryNotes[chapKey] = { done: false, note: "" };
+      }
+      state.summaryNotes[chapKey].note = noteVal;
+      saveAppState();
+    }
+
+    function saveSummaryNoteBtn(chapKey) {
+      const el = document.getElementById(`summaryNoteInput_${chapKey}`);
+      if (el) {
+        updateSummaryNote(chapKey, el.value);
+        showNotification("یادداشت با موفقیت ثبت شد.");
+      }
+    }
+
+    /* ========================================================
+       SECTION 4: TIMER & STUDY LOGS
+       ======================================================== */
+    let timerInterval = null;
+    let timerSeconds = 0;
+    let isTimerRunning = false;
+
+    function formatTime(totalSec) {
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = totalSec % 60;
+      return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function startTimer() {
+      if (isTimerRunning) return;
+      isTimerRunning = true;
+      document.getElementById('startTimerBtn').classList.add('hidden');
+      document.getElementById('pauseTimerBtn').classList.remove('hidden');
+      document.getElementById('pauseTimerBtn').classList.add('flex');
+      document.getElementById('timerStatusBadge').textContent = "در حال مطالعه...";
+      document.getElementById('timerStatusBadge').className = "text-[10px] bg-teal-100 dark:bg-teal-950 text-teal-700 dark:text-teal-300 px-2.5 py-1 rounded-full font-bold";
+
+      timerInterval = setInterval(() => {
+        timerSeconds++;
+        document.getElementById('timerDisplay').textContent = formatTime(timerSeconds);
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      if (!isTimerRunning) return;
+      isTimerRunning = false;
+      clearInterval(timerInterval);
+      document.getElementById('pauseTimerBtn').classList.add('hidden');
+      document.getElementById('startTimerBtn').classList.remove('hidden');
+      document.getElementById('timerStatusBadge').textContent = "متوقف شد";
+      document.getElementById('timerStatusBadge').className = "text-[10px] bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 px-2.5 py-1 rounded-full font-bold";
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      timerSeconds = 0;
+      document.getElementById('timerDisplay').textContent = "00:00:00";
+      document.getElementById('timerStatusBadge').textContent = "آماده";
+      document.getElementById('timerStatusBadge').className = "text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2.5 py-1 rounded-full font-bold";
+    }
+
+    function stopAndTransferTimer() {
+      if (timerSeconds < 60) {
+        alert("زمان کمتر از ۱ دقیقه ثبت نمی‌شود.");
+        resetTimer();
+        return;
+      }
+      pauseTimer();
+      const minutesSpent = Math.round(timerSeconds / 60);
+      document.getElementById('logMinutesInput').value = minutesSpent;
+      resetTimer();
+      showNotification(`${minutesSpent} دقیقه به فرم گزارش انتقال یافت.`);
+    }
+
+    function handleStudyLogSubmit(e) {
+      e.preventDefault();
+      const dateVal = document.getElementById('logDateInput').value.trim();
+      const courseVal = document.getElementById('logCourseSelect').value;
+      const minutesVal = parseInt(document.getElementById('logMinutesInput').value, 10) || 0;
+      const testsVal = parseInt(document.getElementById('logTestsInput').value, 10) || 0;
+      const notesVal = document.getElementById('logNotesInput').value.trim();
+
+      if (!dateVal || minutesVal <= 0) {
+        alert("لطفاً تاریخ و دقایق مطالعه معتبر وارد کنید.");
+        return;
+      }
+
+      state.studyLogs.unshift({
+        id: 'log_' + Date.now(),
+        date: dateVal,
+        course: courseVal,
+        minutes: minutesVal,
+        tests: testsVal,
+        notes: notesVal
+      });
+
+      saveAppState();
+      renderStudyLogs();
+
+      document.getElementById('logMinutesInput').value = '';
+      document.getElementById('logTestsInput').value = '';
+      document.getElementById('logNotesInput').value = '';
+      showNotification("گزارش کار با موفقیت ثبت شد.");
+    }
+
+    function deleteStudyLog(logId) {
+      if (confirm("آیا مایل به حذف این رکورد گزارش کار هستید؟")) {
+        state.studyLogs = state.studyLogs.filter(i => i.id !== logId);
+        saveAppState();
+        renderStudyLogs();
+      }
+    }
+
+    function renderStudyLogs() {
+      const tbody = document.getElementById('studyLogTableBody');
+      tbody.innerHTML = '';
+
+      let totalMinutes = 0;
+      let totalTests = 0;
+
+      if (state.studyLogs.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="text-center py-6 text-slate-400">
+              هنوز هیچ گزارش کاری ثبت نکرده‌اید. با فرم بالا ثبت کنید.
+            </td>
+          </tr>
+        `;
+      } else {
+        state.studyLogs.forEach(log => {
+          totalMinutes += (log.minutes || 0);
+          totalTests += (log.tests || 0);
+
+          const tr = document.createElement('tr');
+          tr.className = "hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition";
+          tr.innerHTML = `
+            <td class="p-3 font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap">${log.date}</td>
+            <td class="p-3 font-semibold text-teal-700 dark:text-teal-400 whitespace-nowrap">${log.course}</td>
+            <td class="p-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">${log.minutes} دقیقه (${(log.minutes / 60).toFixed(1)} ساعت)</td>
+            <td class="p-3 text-indigo-600 dark:text-indigo-400 font-bold whitespace-nowrap">${log.tests || 0} تست</td>
+            <td class="p-3 text-slate-500 dark:text-slate-400 max-w-xs truncate" title="${log.notes || ''}">${log.notes || '-'}</td>
+            <td class="p-3 text-center">
+              <button onclick="deleteStudyLog('${log.id}')" class="text-slate-400 hover:text-rose-500 transition" title="حذف">
+                <i class="fa-regular fa-trash-can text-sm"></i>
+              </button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      const totalHours = Math.floor(totalMinutes / 60);
+      const remainingMinutes = totalMinutes % 60;
+      document.getElementById('totalStudyHoursBadge').textContent = `${totalHours} ساعت و ${remainingMinutes} دقیقه`;
+      document.getElementById('totalStudyTestsBadge').textContent = totalTests.toLocaleString('fa-IR');
+    }
+
+    /* ========================================================
+       GLOBAL PROGRESS CALCULATION
+       ======================================================== */
+    function updateGlobalProgress() {
+      let totalRequiredChecks = 0;
+      let totalCompletedChecks = 0;
+
+      // 1. Official chapters
+      state.syllabus.forEach(course => {
+        let courseRequired = 0;
+        let courseCompleted = 0;
+
+        course.books.forEach(book => {
+          book.chapters.forEach(chap => {
+            const chapKey = `${book.id}_ch_${chap.num}`;
+            const checks = state.officialChecks[chapKey] || {};
+            const extraCount = state.officialExtraReviews[chapKey] || 0;
+
+            courseRequired += 3;
+            if (checks.r1) courseCompleted++;
+            if (checks.r2) courseCompleted++;
+            if (checks.r3) courseCompleted++;
+
+            courseRequired += extraCount;
+            for (let i = 1; i <= extraCount; i++) {
+              if (checks[`extra_${i}`]) courseCompleted++;
+            }
+          });
+        });
+
+        const badge = document.getElementById(`courseProgressBadge-${course.id}`);
+        if (badge) {
+          const perc = courseRequired > 0 ? Math.round((courseCompleted / courseRequired) * 100) : 0;
+          badge.textContent = `${perc}%`;
+        }
+
+        totalRequiredChecks += courseRequired;
+        totalCompletedChecks += courseCompleted;
+      });
+
+      // 2. Supplementary items by subject
+      Object.keys(state.suppBySubject).forEach(cId => {
+        const typesMap = state.suppBySubject[cId] || {};
+        Object.values(typesMap).forEach(topics => {
+          topics.forEach(t => {
+            totalRequiredChecks += 3;
+            if (t.r1) totalCompletedChecks++;
+            if (t.r2) totalCompletedChecks++;
+            if (t.r3) totalCompletedChecks++;
+
+            const extraLen = (t.extraReviews || []).length;
+            totalRequiredChecks += extraLen;
+            (t.extraReviews || []).forEach(r => {
+              if (r) totalCompletedChecks++;
+            });
+          });
+        });
+      });
+
+      const globalPercent = totalRequiredChecks > 0 ? Math.round((totalCompletedChecks / totalRequiredChecks) * 100) : 0;
+      
+      document.getElementById('globalProgressBar').style.width = `${globalPercent}%`;
+      document.getElementById('percentageDisplay').textContent = `${globalPercent}%`;
+      document.getElementById('headerProgressText').textContent = `${globalPercent}%`;
+      document.getElementById('checkedCountDisplay').textContent = totalCompletedChecks.toLocaleString('fa-IR');
+      document.getElementById('totalCheckCountDisplay').textContent = totalRequiredChecks.toLocaleString('fa-IR');
+    }
+
+    function exportData() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `Dental_Residency_StudyPlan_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showNotification("فایل پشتیبان ذخیره گردید.");
+    }
+
+    function importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (imported.syllabus || imported.officialChecks) {
+            state = { ...state, ...imported };
+            saveAppState();
+            renderOfficialSyllabus();
+            renderSupplementarySection();
+            renderSummariesSection();
+            renderStudyLogs();
+            updateGlobalProgress();
+            showNotification("داده‌ها بازیابی شدند.");
+          } else {
+            alert("فایل انتخاب شده معتبر نیست.");
+          }
+        } catch (err) {
+          alert("خطا در خواندن فایل JSON: " + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function showNotification(msg) {
+      const toast = document.createElement('div');
+      toast.className = "fixed bottom-5 left-5 z-50 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2.5 rounded-xl shadow-lg text-xs font-semibold flex items-center gap-2 transform transition-all duration-300 opacity-0 translate-y-3";
+      toast.innerHTML = `<i class="fa-solid fa-check text-teal-400 dark:text-teal-600"></i> ${msg}`;
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.remove('opacity-0', 'translate-y-3');
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-3');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      loadAppState();
+      renderOfficialSyllabus();
+      renderSupplementarySection();
+      renderSummariesSection();
+      renderStudyLogs();
+      updateGlobalProgress();
+
+      const dateField = document.getElementById('logDateInput');
+      if (dateField) {
+        try {
+          const todayFa = new Intl.DateTimeFormat('fa-IR', { dateStyle: 'medium' }).format(new Date());
+          dateField.value = todayFa;
+        } catch (e) {
+          dateField.value = "امروز";
+        }
+      }
+    });
+  </script>
+</body>
+</html>
